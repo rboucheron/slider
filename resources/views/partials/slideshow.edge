@@ -1,0 +1,95 @@
+
+
+<div class="bg-sidebar text-sidebar-foreground p-6 rounded-lg shadow-lg m-auto w-3/4">
+  <h2 class="text-2xl font-bold mb-4">{{ $props.title || 'Mon Diaporama' }}</h2>
+
+  <div class="mb-6">
+    <label for="{{ slideshowId }}-title" class="block text-sm font-medium mb-2">Titre du diaporama</label>
+    <input type="text" id="{{ slideshowId }}-title" class="w-full px-3 py-2 bg-sidebar-accent text-sidebar-accent-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-sidebar-ring" value="{{ $props.title || '' }}" placeholder="Entrez le titre du diaporama">
+  </div>
+
+  <div class="mb-6">
+    <h3 class="text-lg font-semibold mb-2">Ajouter une diapositive</h3>
+    <div class="flex space-x-2">
+      <button class="add-slide px-4 py-2 bg-sidebar-accent text-sidebar-accent-foreground rounded-md hover:bg-sidebar-accent/90 focus:outline-none focus:ring-2 focus:ring-sidebar-ring" data-type="text">Texte</button>
+      <button class="add-slide px-4 py-2 bg-sidebar-accent text-sidebar-accent-foreground rounded-md hover:bg-sidebar-accent/90 focus:outline-none focus:ring-2 focus:ring-sidebar-ring" data-type="list">Liste</button>
+      <button class="add-slide px-4 py-2 bg-sidebar-accent text-sidebar-accent-foreground rounded-md hover:bg-sidebar-accent/90 focus:outline-none focus:ring-2 focus:ring-sidebar-ring" data-type="image">Image</button>
+    </div>
+  </div>
+
+  <div id="{{ slideshowId }}-slides" class="space-y-4">
+    {{-- Les diapositives seront ajoutées ici dynamiquement --}}
+  </div>
+
+  <div class="mt-8">
+    <h3 class="text-lg font-semibold mb-2">Frise du diaporama</h3>
+    <div id="{{ slideshowId }}-timeline" class="flex items-center space-x-2 overflow-x-auto pb-2">
+      {{-- Les éléments de la frise seront ajoutés ici dynamiquement --}}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const slideshowId = '{{ slideshowId }}';
+    const slidesContainer = document.getElementById(`${slideshowId}-slides`);
+    const timelineContainer = document.getElementById(`${slideshowId}-timeline`);
+    let slideCount = 0;
+
+    function addSlide(type) {
+      slideCount++;
+      const slideId = `${slideshowId}-slide-${slideCount}`;
+      const slide = document.createElement('div');
+      slide.className = 'bg-sidebar-accent p-4 rounded-md';
+      slide.innerHTML = `
+        <div class="mb-2">
+          <label for="${slideId}-title" class="block text-sm font-medium mb-1">Titre de la diapositive</label>
+          <input type="text" id="${slideId}-title" class="w-full px-3 py-2 bg-sidebar text-sidebar-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-sidebar-ring" placeholder="Titre de la diapositive">
+        </div>
+        ${getSlideContent(type, slideId)}
+        <button class="delete-slide mt-2 px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Supprimer</button>
+      `;
+      slidesContainer.appendChild(slide);
+
+      const timelineItem = document.createElement('div');
+      timelineItem.className = 'w-8 h-8 rounded-full bg-sidebar-accent flex items-center justify-center text-sidebar-accent-foreground text-sm font-medium';
+      timelineItem.textContent = slideCount;
+      timelineContainer.appendChild(timelineItem);
+
+      slide.querySelector('.delete-slide').addEventListener('click', () => {
+        slide.remove();
+        timelineItem.remove();
+      });
+    }
+
+    function getSlideContent(type, slideId) {
+      switch (type) {
+        case 'text':
+          return `
+            <div>
+              <label for="${slideId}-content" class="block text-sm font-medium mb-1">Contenu</label>
+              <textarea id="${slideId}-content" rows="3" class="w-full px-3 py-2 bg-sidebar text-sidebar-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-sidebar-ring" placeholder="Entrez le contenu de la diapositive"></textarea>
+            </div>
+          `;
+        case 'list':
+          return `
+            <div>
+              <label for="${slideId}-list" class="block text-sm font-medium mb-1">Liste d'éléments</label>
+              <textarea id="${slideId}-list" rows="3" class="w-full px-3 py-2 bg-sidebar text-sidebar-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-sidebar-ring" placeholder="Entrez les éléments de la liste (un par ligne)"></textarea>
+            </div>
+          `;
+        case 'image':
+          return `
+            <div>
+              <label for="${slideId}-image" class="block text-sm font-medium mb-1">URL de l'image</label>
+              <input type="url" id="${slideId}-image" class="w-full px-3 py-2 bg-sidebar text-sidebar-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-sidebar-ring" placeholder="https://exemple.com/image.jpg">
+            </div>
+          `;
+      }
+    }
+
+    document.querySelectorAll('.add-slide').forEach(button => {
+      button.addEventListener('click', () => addSlide(button.dataset.type));
+    });
+  });
+</script>

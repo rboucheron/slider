@@ -1,0 +1,51 @@
+
+
+<div class="group/sidebar-wrapper flex min-h-screen bg-red-200">
+  <aside data-state="{{ isCollapsed ? 'collapsed' : 'expanded' }}" class="group peer hidden md:block text-sidebar-foreground">
+    <div class="duration-200 relative h-screen w-64 bg-sidebar transition-[width] ease-linear group-data-[state=collapsed]:w-[3rem] border-r border-sidebar-border">
+      <div class="flex h-full w-full flex-col bg-sidebar">
+
+
+        {{-- Content --}}
+        <div data-sidebar="content" class="flex min-h-0 flex-1 flex-col gap-2 overflow-auto p-2">
+          <div data-sidebar="group" class="relative flex w-full min-w-0 flex-col">
+            <div data-sidebar="group-content" class="w-full text-sm">
+              <ul data-sidebar="menu" class="flex w-full min-w-0 flex-col gap-1">
+                <li data-sidebar="menu-item" class="group/menu-item relative">
+                  <a href="/documents" data-sidebar="menu-button" class="peer/menu-button hover:bg-[#99bdc3] flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground group-data-[state=collapsed]:!h-8 group-data-[state=collapsed]:!w-8 group-data-[state=collapsed]:!p-2">
+                    <i class="bi bi-folder text-xl"></i>
+                    <span class="truncate group-data-[state=collapsed]:hidden">Documents</span>
+                  </a>
+                </li>
+                <li data-sidebar="menu-item" class="group/menu-item relative">
+                  <a href="/add" data-sidebar="menu-button" class="peer/menu-button flex w-full hover:bg-[#99bdc3] items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground group-data-[state=collapsed]:!h-8 group-data-[state=collapsed]:!w-8 group-data-[state=collapsed]:!p-2">
+                    <i class="bi bi-plus-circle text-xl"></i>
+                    <span class="truncate group-data-[state=collapsed]:hidden">Ajouter</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {{-- Footer with user profile --}}
+        <div data-sidebar="footer" class="flex flex-col gap-2 p-2 border-t border-sidebar-border">
+          <div data-sidebar="menu">
+            <div data-sidebar="menu-item" class="group/menu-item relative">
+              <button data-sidebar="menu-button" class="peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground group-data-[state=collapsed]:!h-8 group-data-[state=collapsed]:!w-8 group-data-[state=collapsed]:!p-2">
+                @if(user)
+                  <img src="{{ user.avatar }}" alt="Photo de profil" class="w-8 h-8 rounded-full">
+                  <span class="truncate group-data-[state=collapsed]:hidden">{{ user.fullName }}</span>
+                @else
+                  <i class="bi bi-person-circle text-2xl"></i>
+                  <span class="truncate group-data-[state=collapsed]:hidden">Non connecté</span>
+                @endif
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+

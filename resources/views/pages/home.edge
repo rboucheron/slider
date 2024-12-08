@@ -1,0 +1,20 @@
+@include('base/head')
+
+<div class="flex">
+@include('partials/sidebar')
+
+
+<div class="container mx-auto py-8">
+  <h1 class="text-3xl font-bold mb-6 text-sidebar-foreground m-auto w-3/4" >Créer un nouveau diaporama</h1>
+
+  @!component('partials/slideshow', {
+    id: 'my-slideshow',
+    title: 'Mon super diaporama'
+  })
+</div>
+
+</div>
+
+
+
+@include('base/footer')
